@@ -7,11 +7,14 @@ class Solution {
         if(i>=cost.length){
             return 0;
         }
+        
         if(hs.containsKey(i)){
             return hs.get(i);
         }
+        
         int onePlus=min(cost,i+2,hs);
         int twoPlus=min(cost,i+3,hs);
+        if(i-2==cost.length||i-3==cost.length)cost[cost.length-1]=0;
         
         int result=cost[i]+Math.max(onePlus,twoPlus);
         hs.put(i,result);
