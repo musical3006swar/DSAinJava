@@ -9,7 +9,7 @@ class Solution {
             int x=pq.poll();
             pq.add(y-x);
         }
-        int x=pq.poll();
-        return x;
+        
+        return pq.peek();
     }
 }
