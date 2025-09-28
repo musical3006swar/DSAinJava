@@ -26,10 +26,10 @@ class Solution {
             }
 
         }
-        ArrayList<Integer> arr=new ArrayList<>();
-        for(int i=bestStart;i<bestStart+bestLen;i++){
-            arr.add(nums[i]);
-        }
+        // ArrayList<Integer> arr=new ArrayList<>();
+        // for(int i=bestStart;i<bestStart+bestLen;i++){
+        //     arr.add(nums[i]);
+        // }
         return bestLen;
     }
 }
