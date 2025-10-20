@@ -3,8 +3,7 @@ class Solution {
         long ans = 0;
         int n=heights.length;
     for (int maxIdx = 0; maxIdx < n; maxIdx++) {
-        int[] copy = heights.clone(); // so you don’t modify original
-        // then apply your left/right logic using this 'peak'
+        int[] copy = heights.clone(); 
         //right
         Stack<Integer> st =new Stack<>();
         for(int i=maxIdx;i>=0;i--){
