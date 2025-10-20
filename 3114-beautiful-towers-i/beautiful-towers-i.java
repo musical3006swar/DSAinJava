@@ -1,22 +1,40 @@
 class Solution {
     public long maximumSumOfHeights(int[] heights) {
-        int n = heights.length;
-        long best = 0;
-
-        for (int maxIdx = 0; maxIdx < n; maxIdx++) {
-            long res = heights[maxIdx];
-            int prev = heights[maxIdx];
-            for (int i = maxIdx - 1; i >= 0; i--) {
-                prev = Math.min(prev, heights[i]);
-                res += prev;
+        long ans = 0;
+        int n=heights.length;
+    for (int maxIdx = 0; maxIdx < n; maxIdx++) {
+        int[] copy = heights.clone(); // so you don’t modify original
+        // then apply your left/right logic using this 'peak'
+        //right
+        Stack<Integer> st =new Stack<>();
+        for(int i=maxIdx;i>=0;i--){
+            while(!st.isEmpty() && st.peek()>copy[i]){
+                st.pop();
             }
-            prev = heights[maxIdx];
-            for (int i = maxIdx + 1; i < n; i++) {
-                prev = Math.min(prev, heights[i]);
-                res += prev;
+            if(!st.isEmpty() && st.peek()<copy[i]){
+                copy[i]=st.peek();
             }
-            best = Math.max(best, res);
+            st.push(copy[i]);
         }
-        return best;
+        //left
+        st.clear();
+            for(int i=maxIdx;i<n;i++){
+                while(!st.isEmpty() && st.peek()>copy[i]){
+                    st.pop();
+                }
+                if(!st.isEmpty() && st.peek()<copy[i]){
+                    copy[i]=st.peek();
+                }
+                st.push(copy[i]);
+            }
+            long res=0;
+            for(int i=0;i<n;i++){
+                res+=copy[i];
+            }
+            ans = Math.max(ans,res);
+        }
+        return ans;
     }
 }
+
+
