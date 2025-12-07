@@ -7,9 +7,7 @@ class Solution {
             sum=sum+n;
             num=num/10;
         }
-        if (sum > 0 && Math.floor(Math.log10(sum))>=1) {
-            return addDigits(sum); 
-        }
+        if(sum>=10)return addDigits(sum);
         return sum;
     }
 }
