@@ -1,18 +1,23 @@
 class Solution {
-    public void floodFill(int[][] image, int sr, int sc, int color, int startColour){
-        if(sc<0 || sc>image[0].length-1 || sr<0 || sr>image.length-1 || image[sr][sc]!=startColour || color==startColour){
-            return;
-        }
-        image[sr][sc]=color;
-        floodFill(image,sr+1,sc,color,startColour);
-        floodFill(image,sr-1,sc,color,startColour);
-        floodFill(image,sr,sc+1,color,startColour);
-        floodFill(image,sr,sc-1,color,startColour);
 
+    public void dfs(int[][] image, int[][] copy, int sr, int sc, int color, int strCol, int[] dRow, int[] dCol){
+        image[sr][sc]=color;
+        for(int i=0;i<4;i++){
+            int newSr= sr+dRow[i];
+            int newSc= sc+dCol[i];
+            if(newSr>=0 && newSr<copy.length && newSc>=0 && newSc<copy[0].length &&  copy[newSr][newSc]!=color && image[newSr][newSc]==strCol ){
+                dfs(image, copy,newSr,newSc, color, strCol, dRow, dCol);
+            }
+
+        }
     }
+
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        int startColour= image[sr][sc];
-        floodFill(image,sr,sc,color, startColour);
-        return image;
+        int strCol = image[sr][sc];
+        int[][] copy = image;
+        int[] dRow={+1,0,-1,0};
+        int[] dCol={0,+1,0,-1};
+        dfs(image,copy,sr,sc,color,strCol, dRow, dCol);
+        return copy;
     }
 }
