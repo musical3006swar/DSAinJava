@@ -1,85 +1,58 @@
 class Pair{
     int left;
     int right;
-    public Pair(int left, int right){
+    int time;
+    public Pair(int left, int right, int time){
         this.left=left;
         this.right=right;
+        this.time=time;
     }
 }
 
 class Solution {
     public int dfs(int[][] copy, int[][] vis, int[][] grid, int m, int n){
-        Queue<Pair> queA = new LinkedList<>();
-        Queue<Pair> queB = new LinkedList<>();
+        Queue<Pair> que = new LinkedList<>();
         int[] delRow = {-1,0,1,0};
         int[] delCol = {0,-1,0,1};
-        int flag = 0, count=0,fresh=0;
+        int currTime=0,fresh=0;
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 if(copy[i][j]==2){
-                    queA.add(new Pair(i,j));
+                    que.add(new Pair(i,j,0));
                 }else if(copy[i][j]==1){
                     fresh++;
                 }
             }
         }
         if(fresh==0)return 0;
-        while(!queA.isEmpty() || !queB.isEmpty()){
+        while(!que.isEmpty()){
             boolean spread = false;
-            if(flag==0){
-                int size = queA.size();
-                for(int s=0;s<size;s++){
-                    Pair p = queA.poll();
+            
+                // int size = queA.size();
+                // for(int s=0;s<size;s++){
+                    Pair p = que.poll();
 
                     for(int k=0;k<4;k++){
                         int newLeft = p.left + delRow[k];
                         int newRight = p.right + delCol[k];
-                            if(
-                                newLeft >= 0 && newLeft < m &&
-                                newRight >= 0 && newRight < n &&
-                                copy[newLeft][newRight] == 1 &&
-                                vis[newLeft][newRight] == 0 
-                            ){
-                                copy[newLeft][newRight] = 2; 
-                                vis[newLeft][newRight] = 1;
-                                queB.add(new Pair(newLeft, newRight));   
-                                fresh--;
-                                spread=true;                     
-                            }
+                        currTime = p.time+1;
+                        if(
+                            newLeft >= 0 && newLeft < m &&
+                            newRight >= 0 && newRight < n &&
+                            copy[newLeft][newRight] == 1 &&
+                            vis[newLeft][newRight] == 0 
+                        ){
+                            copy[newLeft][newRight] = 2; 
+                            vis[newLeft][newRight] = 1;
+                            que.add(new Pair(newLeft, newRight,currTime));   
+                            fresh--;
+                            spread=true;                     
+                        }
                     }
-                }
-                if(spread)count++;
-                flag=1;
-
-            }else{
-                int size = queB.size();
-                for(int s=0;s<size;s++){
-                    Pair p = queB.poll();
-
-                    for(int k=0;k<4;k++){
-                        int newLeft = p.left + delRow[k];
-                        int newRight = p.right + delCol[k];
-                            if(
-                                newLeft >= 0 && newLeft < m &&
-                                newRight >= 0 && newRight < n &&
-                                copy[newLeft][newRight] == 1 &&
-                                vis[newLeft][newRight] == 0 
-                            ){
-                                copy[newLeft][newRight] = 2; 
-                                vis[newLeft][newRight] = 1;
-                                queA.add(new Pair(newLeft, newRight));   
-                                fresh--;
-                                spread=true;                     
-                            }
-                    }    
-                }
-                if(spread)count++;
-                flag=0;
-                
-            }
+            
         }
         if(fresh>0)return -1;
-        return count;
+        return currTime-1;
 
     }
     public int orangesRotting(int[][] grid) {
